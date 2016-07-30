@@ -491,6 +491,10 @@ namespace base_local_planner {
     cmd_vel.linear.y = drive_cmds.getOrigin().getY();
     cmd_vel.angular.z = tf::getYaw(drive_cmds.getRotation());
 
+    if ( std::fabs(cmd_vel.linear.x - 0) < 0.001 && std::fabs(cmd_vel.linear.y - 0) < 0.001 && std::fabs(cmd_vel.angular.z) < min_in_place_vel_th_ ){
+    	cmd_vel.angular.z = min_in_place_vel_th_;
+    }
+
     //if we cannot move... tell someone
     if (path.cost_ < 0) {
       ROS_DEBUG_NAMED("trajectory_planner_ros",
